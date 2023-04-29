@@ -15,6 +15,12 @@
         
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+        <!-- animation CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+
+        <!-- Datatable CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/dataTables.bootstrap4.min.css' %}">
         
         <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
@@ -27,12 +33,29 @@
 
     {% if title == "login" %}
         <body class="account-page">
-            {% block content %}
+            {% block auth-content %}
             
             {% endblock %}
         </body>
     {% else %}
+        <body>
+            <div id="global-loader" >
+                <div class="whirly-loader"> </div>
+            </div>
 
+            <div class="main-wrapper">
+                {% include 'static_templates/headers.html' %}
+
+                {% include 'static_templates/sidebar.html' %}
+                
+                {% block content %}
+                    
+
+                    
+                {% endblock %}
+            </div>
+
+        </body>
     {% endif %}
 
     
@@ -41,9 +64,21 @@
 
     <!-- Feather Icon JS -->
    <script src="{% static 'assets/js/feather.min.js' %}"></script>
+
+   <!-- Slimscroll JS -->
+	<script src="{% static 'assets/js/jquery.slimscroll.min.js' %}"></script>
+
+    <!-- Datatable JS -->
+	<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'assets/js/dataTables.bootstrap4.min.js' %}"></script>
    
    <!-- Bootstrap Core JS -->
    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+   <!-- Chart JS -->
+	<script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+	<script src="{% static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+		
    
    <!-- Custom JS -->
    <script src="{% static 'assets/js/script.js' %}"></script>

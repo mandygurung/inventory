@@ -14,12 +14,13 @@ class JWTAuthentication:
 
     def __call__(self, request, *args, **kwds):
         func_path = resolve(request.path)._func_path
-        if func_path not in self.EXCLUDE and "django.contrib.admin" not in func_path:
-            token = request.COOKIES.get('access_token')
+        if "django.contrib.admin" not in func_path:
 
-            request.META["HTTP_AUTHORIZATION"] = f"Bearer {token}"
-
-            print(request.META)
+            if "access_token" in request.COOKIES and request.COOKIES.get('access_token') is not None:
+ 
+                token = request.COOKIES.get('access_token')
+                
+                request.META["HTTP_AUTHORIZATION"] = f"Bearer {token}"
 
         response = self.get_response(request)
 
