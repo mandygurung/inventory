@@ -22,7 +22,6 @@ class JWTTokenRequiredMixins(AccessMixin):
 
 
     def get_access_from_refresh(self, refresh_token):
-        print("Getting refres")
         data = {
             "refresh": refresh_token
         }
@@ -34,10 +33,8 @@ class JWTTokenRequiredMixins(AccessMixin):
 
     def dispatch(self, request, *args, **kwargs) :
         if not request.headers.get("Authorization") and not request.COOKIES.get("refresh_token"):
-            print("Has no ref and access")
             return self.handle_no_permission()
         elif not request.headers.get("Authorization") and request.COOKIES.get("refresh_token"):
-            print("Has ref")
             tokens = self.get_access_from_refresh(request.COOKIES.get("refresh_token"))
             
             request.META["HTTP_AUTHORIZATION"] = f"Bearer {tokens.get('access')}"
@@ -66,8 +63,6 @@ class JWTTokenRequiredMixins(AccessMixin):
 
             return response
         
-        print("Has auth")
         response = super().dispatch(request, *args, **kwargs) # type: ignore
-        print(response.status_code)
-        print(dir(response))
+
         return response
