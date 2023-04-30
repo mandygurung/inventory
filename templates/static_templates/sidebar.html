@@ -1,3 +1,5 @@
+{% load static %}
+
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-inner slimscroll">
@@ -6,8 +8,8 @@
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Main</h6>
                     <ul>
-                        <li class="active">
-                            <a href="index.html" ><i data-feather="grid"></i><span>Dashboard</span></a>
+                        <li>
+                            <a href="{% url 'accounts:dashboard' %}" ><i data-feather="grid"></i><span>Dashboard</span></a>
                         </li>
                     </ul>								
                 </li>
@@ -95,7 +97,7 @@
                             <a href="javascript:void(0);"><i data-feather="users"></i><span>Manage Users</span><span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="newuser.html">New User </a></li>
-                                <li><a href="userlists.html">Users List</a></li>
+                                <li><a href="{% url 'accounts:user_view' %}">Users List</a></li>
                             </ul>
                         </li>
                     </ul>

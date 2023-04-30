@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from rest_framework.views import APIView
+from apps.accounts import serializers
 from apps.accounts.serializers import AuthenticationSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,8 +8,17 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from apps.core.mixins import JWTTokenRequiredMixins
 from django.conf import settings
+from rest_framework.generics import ListAPIView
+from apps.accounts.serializers import UserSerializer
+from rest_framework.renderers import TemplateHTMLRenderer
+from apps.core.renderers import SerializerTemplateHTMLRenderer
+
 # from datetime import datetime
 import datetime
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 # Create your views here.
 class LoginView(APIView):
 
@@ -60,8 +70,8 @@ class LoginView(APIView):
         serializers.is_valid(raise_exception=True)
 
         response = Response(data={"msg": "Success"}, status=status.HTTP_200_OK)
-        exp = datetime.datetime.now() + datetime.timedelta(minutes=1)
-        ref_exp = datetime.datetime.now() + datetime.timedelta(minutes=10)
+        exp = datetime.datetime.now() + datetime.timedelta(minutes=60)
+        ref_exp = datetime.datetime.now() + datetime.timedelta(days=1)
 
         str_exp = datetime.datetime.strftime(exp, "%d-%b-%Y %H:%M:%S")
         ref_str_exp = datetime.datetime.strftime(ref_exp, "%d-%b-%Y %H:%M:%S")
@@ -107,3 +117,28 @@ class DashboardView(JWTTokenRequiredMixins, APIView):
 
         return render(request, "index.html")
 
+
+
+
+class UserView(JWTTokenRequiredMixins, ListAPIView):
+
+    authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UserSerializer
+
+    # renderer_classes = [SerializerTemplateHTMLRenderer]
+
+    # template_name = "accounts/users.html"
+
+    def get(self, request):
+        queryset = User.objects.all()
+
+        serializers = self.serializer_class(queryset ,many=True)
+
+        context = {
+            "users": serializers.data
+        }
+
+        return render(request, "accounts/users.html", context=context)

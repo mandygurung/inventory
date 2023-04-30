@@ -6,6 +6,18 @@ Template Name: POS - Bootstrap Admin Template
 
 $(document).ready(function(){
 
+	href = window.location.pathname;
+
+	$('a[href="'+href+'"]').parent().addClass('active');
+
+	if($('a[href="'+href+'"]').parent().parent().parent('li').length > 0){
+		$('a[href="'+href+'"]').parent().parent().css('display', 'block');
+		$('a[href="'+href+'"]').parent().parent().siblings().addClass('subdrop')
+	}
+
+
+	// $('a[href="'+href+'"]').parent().parent().addClass('active')
+
 	// Variables declarations
 	var $wrapper = $('.main-wrapper');
 	var $slimScrolls = $('.slimscroll');
