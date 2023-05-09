@@ -1,7 +1,5 @@
-from gc import get_objects
 from django.shortcuts import redirect, render
 from rest_framework.views import APIView
-from apps.accounts import serializers
 from apps.accounts.serializers import AuthenticationSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,10 +7,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from apps.core.mixins import JWTTokenRequiredMixins
 from django.conf import settings
-from rest_framework.generics import ListAPIView,UpdateAPIView
+from rest_framework.generics import UpdateAPIView
 from apps.accounts.serializers import UserSerializer
-from rest_framework.renderers import TemplateHTMLRenderer
-from apps.core.renderers import SerializerTemplateHTMLRenderer
 from rest_framework import status
 
 # from datetime import datetime

@@ -1,10 +1,8 @@
-from dataclasses import field
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from apps.accounts.signals import user_profile_signal
 from apps.accounts.models import UserProfile
-# from django.contrib.auth import get_user
 
 User = get_user_model()
 
