@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, render
 from rest_framework.views import APIView
-from apps.accounts import serializers
 from apps.accounts.serializers import AuthenticationSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,10 +7,9 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from apps.core.mixins import JWTTokenRequiredMixins
 from django.conf import settings
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import UpdateAPIView
 from apps.accounts.serializers import UserSerializer
-from rest_framework.renderers import TemplateHTMLRenderer
-from apps.core.renderers import SerializerTemplateHTMLRenderer
+from rest_framework import status
 
 # from datetime import datetime
 import datetime
@@ -110,17 +108,16 @@ class DashboardView(JWTTokenRequiredMixins, APIView):
 
     def get(self, request):
 
+        context = {
+            "page_title": "Dashboard - StockHub"
+        }
 
-        # html = render_to_string("index.html")
-
-        # return Response(data={"html": html})
-
-        return render(request, "index.html")
-
+        return render(request, "index.html", context=context)
 
 
 
-class UserView(JWTTokenRequiredMixins, ListAPIView):
+
+class UserView(JWTTokenRequiredMixins, APIView):
 
     authentication_classes = [JWTAuthentication]
 
@@ -128,17 +125,80 @@ class UserView(JWTTokenRequiredMixins, ListAPIView):
 
     serializer_class = UserSerializer
 
-    # renderer_classes = [SerializerTemplateHTMLRenderer]
-
-    # template_name = "accounts/users.html"
-
     def get(self, request):
         queryset = User.objects.all()
 
         serializers = self.serializer_class(queryset ,many=True)
 
         context = {
+            "page_title": "Users - StockHub",
             "users": serializers.data
         }
 
         return render(request, "accounts/users.html", context=context)
+    
+
+class UserCreateView(JWTTokenRequiredMixins, APIView):
+
+    authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UserSerializer
+
+    def get(self, request):
+
+        context = {
+            "page_title": "Create Users - StockHub",
+        }
+
+        return render(request, "accounts/create_users.html", context)
+    
+
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data, context={
+            "request": request
+        })
+
+        if serializer.is_valid():
+            print(serializer.validated_data)
+            serializer.save()
+        elif serializer.errors:
+            print("error in serializer")
+            print(serializer.errors)
+        
+        return Response(data={"msg": "Created"}, status=status.HTTP_201_CREATED)
+    
+
+class UserDetailView(JWTTokenRequiredMixins, UpdateAPIView):
+
+    authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UserSerializer
+
+    lookup_field = "id"
+
+    queryset = User.objects.all()
+
+
+    # def get_serializer_class(self):
+    #     print("Checking serializer")
+    #     print(self.request.method)
+    #     return super().get_serializer_class()
+    
+    def get(self, request, id):
+
+        serializer = self.get_serializer(self.get_object())
+
+        context = {
+            "page_title": "Edit User - StockHub",
+            "user": serializer.data
+        }
+
+        return render(request, "accounts/edit_users.html", context=context)
+    
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)

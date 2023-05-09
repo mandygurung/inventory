@@ -14,6 +14,18 @@
                     </ul>								
                 </li>
                 <li class="submenu-open">
+                    <h6 class="submenu-hdr">User Management</h6>		
+                    <ul>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i data-feather="users"></i><span>Manage Users</span><span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{% url 'accounts:create_user' %}">New User </a></li>
+                                <li><a href="{% url 'accounts:user_view' %}">Users List</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>	
+                <li class="submenu-open">
                     <h6 class="submenu-hdr">Products</h6>
                     <ul>
                         <li><a href="productlist.html"><i data-feather="box"></i><span>Products</span></a></li>
@@ -90,18 +102,7 @@
                         <li><a href="customerreport.html"><i data-feather="pie-chart"></i><span>Customer Report</span></a></li>
                     </ul>
                 </li>															
-                <li class="submenu-open">
-                    <h6 class="submenu-hdr">User Management</h6>		
-                    <ul>
-                        <li class="submenu">
-                            <a href="javascript:void(0);"><i data-feather="users"></i><span>Manage Users</span><span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="newuser.html">New User </a></li>
-                                <li><a href="{% url 'accounts:user_view' %}">Users List</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>			
+                		
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Pages</h6>		
                     <ul>

@@ -8,11 +8,12 @@ $(document).ready(function(){
 
 	href = window.location.pathname;
 
-	$('a[href="'+href+'"]').parent().addClass('active');
+	$('a[href="'+href+'"]').addClass('active');
 
 	if($('a[href="'+href+'"]').parent().parent().parent('li').length > 0){
 		$('a[href="'+href+'"]').parent().parent().css('display', 'block');
-		$('a[href="'+href+'"]').parent().parent().siblings().addClass('subdrop')
+		$('a[href="'+href+'"]').parent().parent().siblings().addClass('active');
+		$('a[href="'+href+'"]').parent().parent().siblings().addClass('subdrop');
 	}
 
 
