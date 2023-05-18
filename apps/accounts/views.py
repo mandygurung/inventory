@@ -5,11 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from apps.core.mixins import JWTTokenRequiredMixins
+from apps.category.models import Category
+from apps.core.mixins import JWTTokenRequiredMixins, ExportToCSVMixin
 from django.conf import settings
 from rest_framework.generics import UpdateAPIView
 from apps.accounts.serializers import UserSerializer
 from rest_framework import status
+from django.http import HttpResponse
+# from datetime import datetime
 
 # from datetime import datetime
 import datetime
@@ -202,3 +205,20 @@ class UserDetailView(JWTTokenRequiredMixins, UpdateAPIView):
     
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
+    
+
+class UserExportToExcel(JWTTokenRequiredMixins, ExportToCSVMixin, APIView):
+
+    authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        response = HttpResponse(content_type="application/ms-excel")
+
+        response['Content-Disposition'] = f"attachment; filename=User_{str(datetime.datetime.now())}.xlsx"
+
+        self.export_to_csv(User, response)
+
+        return response

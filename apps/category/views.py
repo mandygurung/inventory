@@ -1,12 +1,15 @@
 from django.shortcuts import render
-from apps.accounts import serializers
-from apps.core.mixins import JWTTokenRequiredMixins
+from apps.core.mixins import JWTTokenRequiredMixins, ExportToCSVMixin
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from apps.category.serializers import CategorySerializer
 from apps.category.models import Category
+from datetime import datetime
+from django.http import HttpResponse
+import xlwt
+
 
 # Create your views here.
 class CategoryView(JWTTokenRequiredMixins, ListAPIView):
@@ -80,3 +83,23 @@ class CategoryDetailView(JWTTokenRequiredMixins, UpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
+    
+class CategoryExportToExcel(JWTTokenRequiredMixins, ExportToCSVMixin, APIView):
+
+    authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        response = HttpResponse(content_type="application/ms-excel")
+
+        response['Content-Disposition'] = f"attachment; filename=Category_{str(datetime.now())}.xlsx"
+
+        self.export_to_csv(Category, response)
+
+        return response
+
+            
+
+        

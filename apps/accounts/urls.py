@@ -9,5 +9,6 @@ urlpatterns = [
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
     path('users/', views.UserView.as_view(), name="user_view"),
     path('create-users/', views.UserCreateView.as_view(), name="create_user"),
-    path('detail-user/<int:id>', views.UserDetailView.as_view(), name="detail_user")
+    path('detail-user/<int:id>', views.UserDetailView.as_view(), name="detail_user"),
+    path('export-to-excel/', views.UserExportToExcel.as_view(), name="export_to_csv")
 ]
