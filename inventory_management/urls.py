@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include('apps.accounts.urls', namespace="accounts")),
     path("category/", include('apps.category.urls', namespace="category")),
+    path("supplier/", include('apps.supplier.urls', namespace="supplier")),
     path('api/token/', views.TokenObtainPairView.as_view(), name="obtain_token"),
     path('api/refresh_token/', views.TokenRefreshView.as_view(), name='refresh_token'),
 ]
