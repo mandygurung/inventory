@@ -6,15 +6,16 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>User List</h4>
-                <h6>Manage your User</h6>
+                <h4>Supplier List</h4>
+                <h6>Manage your Supplier</h6>
             </div>
             <div class="page-btn">
-                <a href="{% url 'accounts:create_user' %}" class="btn btn-added"><img src="{% static 'assets/img/icons/plus.svg' %}" alt="img">Add User</a>
+                <a href="{% url 'supplier:supplier_create' %}" class="btn btn-added"><img src="{% static 'assets/img/icons/plus.svg' %}" alt="img">Add Supplier</a>
             </div>
         </div>
 
-        <!-- users list -->
+
+        <!-- /product list -->
         <div class="card">
             <div class="card-body">
                 <div class="table-top">
@@ -35,7 +36,7 @@
                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img src="{% static 'assets/img/icons/pdf.svg' %}" alt="img"></a>
                             </li>
                             <li>
-                                <a href="{% url 'accounts:export_to_csv' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img src="{% static 'assets/img/icons/excel.svg' %}" alt="img"></a>
+                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img src="{% static 'assets/img/icons/excel.svg' %}" alt="img"></a>
                             </li>
                             <li>
                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img src="{% static 'assets/img/icons/printer.svg' %}" alt="img"></a>
@@ -49,7 +50,12 @@
                         <div class="row">
                             <div class="col-lg-2 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <input type="text" placeholder="Enter User Name">
+                                    <input type="text" placeholder="Enter Supplier Code">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Supplier">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-sm-6 col-12">
@@ -62,50 +68,36 @@
                                     <input type="text" placeholder="Enter Email">
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date">
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <select class="select">
-                                        <option>Disable</option>
-                                        <option>Enable</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-lg-1 col-sm-6 col-12 ms-auto">
                                 <div class="form-group">
                                     <a class="btn btn-filters ms-auto"><img src="{% static 'assets/img/icons/search-whites.svg' %}" alt="img"></a>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
+
                 <!-- /Filter -->
                 <div class="table-responsive">
-                    <table class="table  datanew">
+                    <table class="table datanew">
                         <thead>
                             <tr>
                                 <th>
                                     <label class="checkboxs">
-                                        <input type="checkbox">
+                                        <input type="checkbox" id="select-all">
                                         <span class="checkmarks"></span>
                                     </label>
                                 </th>
-                                <th>Profile</th>
-                                <th>User Name</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
+                                <th>Supplier Name</th>
                                 <th>Phone</th>
                                 <th>Email</th>
-                                <th>Status</th>
+                                <th>Address</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in users %}
+                            {% for supplier in suppliers %}
                                 <tr>
                                     <td>
                                         <label class="checkboxs">
@@ -115,30 +107,16 @@
                                     </td>
                                     <td class="productimgname">
                                         <a href="javascript:void(0);" class="product-img">
-                                            <img src="{{user.user_profile.profile}}" alt="product">
+                                            <img src="{{supplier.image}}" alt="product">
                                         </a>
+                                        <a href="javascript:void(0);">{{supplier.name}}</a>
                                     </td>
-                                    <td>{{user.username}}</td>
-                                    <td>{{user.first_name}}</td>
-                                    <td>{{user.last_name}}</td>
-                                    <td>{{user.phone_number}}</td>
-                                    <td>{{user.email}}</td>
-                                    <td>
-                                        {% if user.is_active %}
-                                            <div class="status-toggle d-flex justify-content-between align-items-center">
-                                                <input type="checkbox" id="user-{{user.id}}" class="check" checked>
-                                                <label for="user-{{user.id}}" class="checktoggle">checkbox</label>
-                                            </div>
-                                        {% else %}
-                                            <div class="status-toggle d-flex justify-content-between align-items-center">
-                                                <input type="checkbox" id="user-{{user.id}}" class="check">
-                                                <label for="user-{{user.id}}" class="checktoggle">checkbox</label>
-                                            </div>      
-                                        {% endif %}
-                                    </td>
+                                    <td>{{supplier.phone}}</td>
+                                    <td>{{supplier.email}}</td>
+                                    <td>{{supplier.address}}</td>
                                     <td>
                                         
-                                        <a class="me-3" href="{% url 'accounts:detail_user' user.id %}">
+                                        <a class="me-3" href="{% url 'supplier:supplier_detail' supplier.id %}">
                                             <img src="{% static 'assets/img/icons/edit.svg' %}" alt="img">
                                         </a>
                                         <a class="me-3 confirm-text" href="javascript:void(0);">
@@ -155,4 +133,8 @@
         <!-- /product list -->
     </div>
 </div>
+{% endblock %}
+
+{% block externaljs %}
+
 {% endblock %}
