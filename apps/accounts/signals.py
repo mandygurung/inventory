@@ -19,4 +19,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         print("User profile created...")
 
 user_profile_signal.connect(create_user_profile)
-        
+       
